@@ -13,8 +13,10 @@ const OrderForm = () => {
   const [total, setTotal] = useState(0);
   const [troco, setTroco] = useState('');
   const [cidade, setCidade] = useState('');
+  const [referencia, setReferencia] = useState('');
 
   useEffect(() => {
+    document.title = "Gás Jardim";
     const gasTotal = quantidadeGas * 100;
     const aguaTotal = quantidadeAgua * 50;
 
@@ -53,11 +55,16 @@ const OrderForm = () => {
     return true;
   };
 
+const novoTotalFinal = () => {
+let novoTotal2 = total * 1;
+  setTotal(novoTotal2);
+};
+
   const enviarPedidoWhatsApp = () => {
     if (!isTrocoValido()) {
       return;
     }
-    let mensagem = `*NOVO PEDIDO*\n\n*Nome:* ${nome}\n*Cidade:* ${cidade}\n*Endereço:* ${endereco}. *Número:* ${numero}\n*Complemento:* ${complemento}\n*Quantidade de Gás:* ${quantidadeGas}\n*Método de Pagamento:* ${metodoPagamento}\n*Total:* R$ ${total.toFixed(2)}`;
+    let mensagem = `*NOVO PEDIDO*\n\n*Nome:* ${nome}\n*Cidade:* ${cidade}\n*Endereço:* ${endereco}. *Número:* ${numero}\n*Complemento:* ${complemento}\n*Referência:* ${referencia}\n*Quantidade de Gás:* ${quantidadeGas}\n*Método de Pagamento:* ${metodoPagamento}\n*Total:* R$ ${total.toFixed(2)}`;
   
     if (metodoPagamento === 'Dinheiro' && troco) {
       mensagem += `\n*Valor para troco:* R$ ${troco}`;
@@ -84,14 +91,16 @@ const OrderForm = () => {
     setNumero('');
     setComplemento('');
     setCidade('');
+    setReferencia('');
   };
-
+  
   return (
-    <div style={styles.container}>
+      <div style={styles.container}>
       <div>
         <img style={styles.imagem} src={require('./assets/logogasjardim.png')} alt="Logo" />
       </div>
       <div style={styles.formContainer}>
+        <div style={styles.divTituloInicial}><text style={styles.tituloInicial}><strong>Faça seu pedido</strong></text></div>
         <input
           style={styles.input}
           placeholder="Nome"
@@ -116,24 +125,32 @@ const OrderForm = () => {
           value={cidade}
           onChange={(e) => setCidade(e.target.value)}
         />
+        <div style={styles.endereconumero}>
         <input
-          style={styles.input}
+          style={styles.inputendereco}
           placeholder="Endereço"
           value={endereco}
           onChange={(e) => setEndereco(e.target.value)}
         />
         <input
-          style={styles.input}
+          style={styles.inputnumero}
           placeholder="Número"
           value={numero}
           onChange={(e) => setNumero(e.target.value)}
           type="number"
         />
+        </div>
         <input
           style={styles.input}
           placeholder="Complemento"
           value={complemento}
           onChange={(e) => setComplemento(e.target.value)}
+        />
+          <input
+          style={styles.input}
+          placeholder="Ponto de referência"
+          value={referencia}
+          onChange={(e) => setReferencia(e.target.value)}
         />
         <div style={styles.containerCentral}>
         <div style={styles.quantityContainer}>
@@ -141,12 +158,12 @@ const OrderForm = () => {
           <div style={styles.quantityButtons}>
             <button
               style={styles.button}
-              onClick={() => setQuantidadeGas(quantidadeGas > 0 ? quantidadeGas - 1 : 0)}
+              onClick={() => {setQuantidadeGas(quantidadeGas > 0 ? quantidadeGas - 1 : 0);novoTotalFinal()}}
             >
               -
             </button>
             <span style={styles.quantityText}>{quantidadeGas}</span>
-            <button style={styles.button} onClick={() => setQuantidadeGas(quantidadeGas + 1)}>
+            <button style={styles.button} onClick={() => {setQuantidadeGas(quantidadeGas + 1);novoTotalFinal()}}>
               +
             </button>
           </div>
@@ -229,6 +246,17 @@ const styles = {
     height: 'auto',
     paddingTop: '0%'
   },
+  divTituloInicial: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 'auto',
+    textAlign: 'center',
+    marginBottom: '18px'
+  },
+  tituloInicial: {
+    fontSize: 26,
+    color: '#3f3f3f'
+  },
   formContainer: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -252,6 +280,37 @@ const styles = {
     borderRadius: '5px',
     paddingHorizontal: '10px',
     fontSize: '15px',
+  },
+  inputnumero: {
+    width: '25%',
+    height: '40px',
+    margin: '0 -7px',
+    marginBottom: '8px',
+    paddingLeft: '5px',
+    paddingRight: '10px',
+    borderColor: '#ccc',
+    borderWidth: '1px',
+    borderRadius: '5px',
+    paddingHorizontal: '10px',
+    fontSize: '15px',
+  },
+  inputendereco: {
+    width: '75%',
+    height: '40px',
+    margin: '0 -7px',
+    marginBottom: '8px',
+    paddingLeft: '5px',
+    paddingRight: '10px',
+    borderColor: '#ccc',
+    borderWidth: '1px',
+    borderRadius: '5px',
+    paddingHorizontal: '10px',
+    fontSize: '15px',
+    marginRight: 16
+  },
+  endereconumero: {
+    display: 'flex',
+    marginBottom: '8px',
   },
   cepInput: {
     width: '100%',
