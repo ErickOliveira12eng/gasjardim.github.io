@@ -17,7 +17,7 @@ const OrderForm = () => {
 
   useEffect(() => {
     document.title = "Gás Jardim";
-    const gasTotal = quantidadeGas * 100;
+    const gasTotal = quantidadeGas * 110;
     const aguaTotal = quantidadeAgua * 50;
 
     let novoTotal = gasTotal + aguaTotal;
